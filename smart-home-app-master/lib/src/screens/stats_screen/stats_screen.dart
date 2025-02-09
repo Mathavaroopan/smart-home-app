@@ -1,13 +1,27 @@
-import 'package:domus/src/screens/stats_screen/components.dart';
 import 'package:flutter/material.dart';
 import 'package:domus/src/screens/stats_screen/components/stats_pie_chart.dart';
+import 'package:domus/src/screens/stats_screen/components.dart';
 
-class StatsScreen extends StatelessWidget {
+class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
 
   static String routeName = '/stats-screen';
 
-   Widget build(BuildContext context) {
+  @override
+  _StatsScreenState createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  String selectedFilter = "daily"; // Default filter
+
+  void updateFilter(String filter) {
+    setState(() {
+      selectedFilter = filter;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -17,45 +31,36 @@ class StatsScreen extends StatelessWidget {
           padding: EdgeInsets.only(top: 20, left: 15),
           child: Text(
             'Stats',
-            style: TextStyle(
-              fontFamily: 'Lexend',
-              fontSize: 36,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-            ),
+            style: TextStyle(fontFamily: 'Lexend', fontSize: 36, fontWeight: FontWeight.w500, color: Colors.black),
           ),
         ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(top: 20, right: 15),
-            child: Icon(
-              Icons.bolt,
-              size: 36,
-              color: Colors.black,
-            ),
+            child: Icon(Icons.bolt, size: 36, color: Colors.black),
           ),
         ],
         elevation: 0,
       ),
-      body: const Column(
+      body: Column(
         children: [
-          TypeSelection(),
-          SizedBox(height: 15),
+          TypeSelection(onSelectionChanged: updateFilter), // Pass filter update function
+          const SizedBox(height: 15),
           Expanded(
-            child: StatsElectricityUsageChart(),
+            child: StatsElectricityUsageChart(), // Electricity usage chart
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
-            child: StatsDeviceConsumptionChart(),
+            child: StatsDeviceConsumptionChart(), // Device consumption chart
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
-            child: StatsDeviceConsumptionPieChart(),
+            child: StatsDeviceConsumptionPieChart(filter: selectedFilter), // Pie chart with selected filter
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
         ],
       ),
-      bottomNavigationBar: const StatsBottomAppBar(),
+      bottomNavigationBar: const StatsBottomAppBar(), // Bottom navigation bar
     );
   }
 }

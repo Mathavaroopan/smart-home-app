@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StatsDeviceConsumptionPieChart extends StatefulWidget {
-  const StatsDeviceConsumptionPieChart({Key? key}) : super(key: key);
+  final String filter; // "daily", "weekly", "monthly"
+
+  const StatsDeviceConsumptionPieChart({Key? key, required this.filter}) : super(key: key);
 
   @override
   _StatsDeviceConsumptionPieChartState createState() => _StatsDeviceConsumptionPieChartState();
@@ -14,29 +16,36 @@ class _StatsDeviceConsumptionPieChartState extends State<StatsDeviceConsumptionP
   List<Consumption> _consumptionData = [];
 
   @override
+  void didUpdateWidget(StatsDeviceConsumptionPieChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.filter != oldWidget.filter) {
+      fetchConsumptionData();
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     fetchConsumptionData();
   }
 
   Future<void> fetchConsumptionData() async {
-    final url = Uri.parse('https://df15-106-198-9-171.ngrok-free.app/api/device-consumption'); // Change to your actual backend API
+    final url = Uri.parse(
+      'https://df15-106-198-9-171.ngrok-free.app/api/device-consumption?period=${widget.filter}',
+    );
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print(response.body);
         final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData);
 
-        // Create a list of Consumption objects by iterating over the map
         List<Consumption> consumptionList = responseData.entries
             .map((entry) => Consumption(
-            deviceType: entry.key,       // The key is the device type (e.g., "AC")
-            usage: entry.value.toDouble() // The value is the total usage for that device type
+          deviceType: entry.key,
+          usage: entry.value.toDouble(),
         ))
             .toList();
 
-        print(consumptionList);
         setState(() {
           _consumptionData = consumptionList;
         });
@@ -48,28 +57,26 @@ class _StatsDeviceConsumptionPieChartState extends State<StatsDeviceConsumptionP
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _consumptionData.isEmpty
-            ? const CircularProgressIndicator()
-            : SizedBox(
-          height: 300,
-          child: SfCircularChart(
-            title: ChartTitle(text: 'Device Power Consumption'),
-            legend: Legend(isVisible: true),
-            series: <CircularSeries>[
-              PieSeries<Consumption, String>(
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
-                dataSource: _consumptionData,
-                xValueMapper: (Consumption consumption, _) => consumption.deviceType,
-                yValueMapper: (Consumption consumption, _) => consumption.usage,
-                dataLabelMapper: (Consumption consumption, _) => '${consumption.deviceType}: ${consumption.usage.toStringAsFixed(2)} kWh',
-              ),
-            ],
-          ),
+    return Center(
+      child: _consumptionData.isEmpty
+          ? const CircularProgressIndicator()
+          : SizedBox(
+        height: 300,
+        child: SfCircularChart(
+          title: ChartTitle(text: 'Device Power Consumption'),
+          legend: Legend(isVisible: true),
+          series: <CircularSeries>[
+            PieSeries<Consumption, String>(
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
+              dataSource: _consumptionData,
+              xValueMapper: (Consumption consumption, _) => consumption.deviceType,
+              yValueMapper: (Consumption consumption, _) => consumption.usage,
+              dataLabelMapper: (Consumption consumption, _) =>
+              '${consumption.deviceType}: ${consumption.usage.toStringAsFixed(2)} kWh',
+            ),
+          ],
         ),
       ),
     );
