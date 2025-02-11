@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/hardware_interfacing/smart-home-app-master/build" />
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/hardware_interfacing/smart-home-app-master/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/hardware_interfacing/smart-home-app-master/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/application/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/application/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Power-Consumption-Monitoring-System/application/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
