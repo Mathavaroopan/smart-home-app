@@ -26,8 +26,7 @@ class _StatsElectricityUsageChartState extends State<StatsElectricityUsageChart>
       setState(() {
         data = responseData.map((item) => Consumption(day: item['date'], usage: item['usage'].toDouble())).toList();
       });
-      print("This is data");
-      print(response.body);
+      print(data);
     }
   }
 

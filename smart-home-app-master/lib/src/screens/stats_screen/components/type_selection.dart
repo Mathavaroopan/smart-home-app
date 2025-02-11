@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:domus/config/size_config.dart';
 
 class TypeSelection extends StatefulWidget {
-  final Function(String) onSelectionChanged; // Callback function
+  final Function(String) onSelectionChanged;
 
   const TypeSelection({Key? key, required this.onSelectionChanged}) : super(key: key);
 
@@ -11,8 +11,8 @@ class TypeSelection extends StatefulWidget {
 }
 
 class _TypeSelectionState extends State<TypeSelection> {
-  final List<bool> isSelected = [false, true, false];
-  final List<String> filters = ["weekly", "daily", "monthly"];
+  final List<bool> isSelected = [true, false]; // 2 elements
+  final List<String> filters = ["daily", "monthly"]; // 2 elements
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +28,23 @@ class _TypeSelectionState extends State<TypeSelection> {
         renderBorder: false,
         borderRadius: const BorderRadius.horizontal(left: Radius.circular(18), right: Radius.circular(18)),
         textStyle: const TextStyle(fontFamily: 'ABeeZee'),
-        isSelected: isSelected,
+        isSelected: isSelected, // Must match children count
         children: [
-          SizedBox(width: getProportionateScreenWidth(78), child: const Text('Weekly', textAlign: TextAlign.center)),
           SizedBox(width: getProportionateScreenWidth(78), child: const Text('Daily', textAlign: TextAlign.center)),
           SizedBox(width: getProportionateScreenWidth(78), child: const Text('Monthly', textAlign: TextAlign.center)),
         ],
         onPressed: (index) {
           setState(() {
-            for (int i = 0; i < isSelected.length; i++) {
-              isSelected[i] = i == index;
+            // Ensure `isSelected` length matches `children` length
+            if (isSelected.length == filters.length) {
+              for (int i = 0; i < isSelected.length; i++) {
+                isSelected[i] = (i == index);
+              }
+              widget.onSelectionChanged(filters[index]); // Notify parent
+            } else {
+              print("Error: isSelected length does not match children length");
             }
           });
-
-          widget.onSelectionChanged(filters[index]); // Notify parent
         },
       ),
     );
