@@ -47,11 +47,11 @@ class _StatsScreenState extends State<StatsScreen> {
           TypeSelection(onSelectionChanged: updateFilter), // Pass filter update function
           const SizedBox(height: 15),
           Expanded(
-            child: StatsElectricityUsageChart(), // Electricity usage chart
+            child: StatsElectricityUsageChart(filter: selectedFilter), // Electricity usage chart
           ),
           const SizedBox(height: 15),
           Expanded(
-            child: StatsDeviceConsumptionChart(), // Device consumption chart
+            child: StatsDeviceConsumptionChart(filter: selectedFilter), // Device consumption chart
           ),
           const SizedBox(height: 15),
           Expanded(

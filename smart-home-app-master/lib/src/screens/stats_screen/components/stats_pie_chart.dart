@@ -31,7 +31,7 @@ class _StatsDeviceConsumptionPieChartState extends State<StatsDeviceConsumptionP
 
   Future<void> fetchConsumptionData() async {
     final url = Uri.parse(
-      'https://df15-106-198-9-171.ngrok-free.app/api/device-consumption?period=${widget.filter}',
+      'https://ee1b-223-185-203-96.ngrok-free.app/api/device-consumption?period=${widget.filter}',
     );
 
     try {

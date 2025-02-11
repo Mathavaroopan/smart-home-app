@@ -7,5 +7,6 @@ class Consumption {
   });
 
   final String day;
-  final double usage;
+  final num usage;
 }
+
